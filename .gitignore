@@ -57,4 +57,4 @@ fabric.properties
 *test.py
 *test.ini
 
-/core/util/config_test.ini
+/.idea/
