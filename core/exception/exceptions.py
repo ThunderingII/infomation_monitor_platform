@@ -16,3 +16,7 @@ class VerificationException(Exception):
 
 class FormatInvalidException(Exception):
     pass
+
+
+class ParameterException(Exception):
+    pass

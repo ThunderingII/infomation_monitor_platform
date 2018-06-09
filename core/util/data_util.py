@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import json
 from enum import Enum
+import requests
 
 
 class ResponseType(Enum):
@@ -8,8 +9,10 @@ class ResponseType(Enum):
     html = 1
 
 
-def pre_process(data_text, type=ResponseType.json):
+def pre_process(data, type=ResponseType.json):
+    if isinstance(data, requests.models.Response):
+        data = data.text
     if type == ResponseType.json:
-        return json.loads(data_text, encoding='utf-8')
+        return json.loads(data, encoding='utf-8')
     elif type == ResponseType.html:
-        return BeautifulSoup(data_text)
+        return BeautifulSoup(data, 'lxml')
