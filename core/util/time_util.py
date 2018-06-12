@@ -4,6 +4,7 @@ import random
 from enum import Enum
 import re
 from core.exception.exceptions import *
+import threading
 
 
 class UTC(datetime.tzinfo):
@@ -66,7 +67,7 @@ def get_timestamp(time_str, tzinfo_num=8):
         raise FormatInvalidException('格式必须为：xxxx-xx-xx HH:mm:ss')
 
 
-def timer(start_time, login_operation, operation):
+def timer(start_time, operation=None, login_operation=None):
     times = 0
     while 1:
         timeDelay = start_time - time.time()
@@ -87,6 +88,29 @@ def timer(start_time, login_operation, operation):
         else:
             operation()
             break
+
+
+def loop(operation=None, judge_operation=None, m=5, r=1):
+    while judge_operation():
+        operation()
+        random_sleep(m, r)
+
+
+def thread_timer(start_time, login_operation, operation):
+    t = ThreadTimer(start_time, login_operation, operation)
+    t.start()
+    return t
+
+
+class ThreadTimer(threading.Thread):
+    def __init__(self, start_time, login_operation, operation):
+        threading.Thread.__init__(self)
+        self.start_time = start_time
+        self.login_operation = login_operation
+        self.operation = operation
+
+    def run(self):
+        timer(self.start_time, self.login_operation, self.operation)
 
 
 def get_time_str(p_tuple=time.localtime(), format='%Y-%m-%d %H:%M:%S'):

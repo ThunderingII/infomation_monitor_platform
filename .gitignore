@@ -53,11 +53,11 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
-
-*test.py
-*test.ini
-
+test/*
+*test.*
 IMP_*
+*.html
+*.jpg
 
 /.idea/
 /app/my_config.ini
