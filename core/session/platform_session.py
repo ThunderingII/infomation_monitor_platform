@@ -4,6 +4,7 @@ from core.exception import exceptions
 import pickle
 import time
 import os
+import sys
 
 
 class IMP_Session(object):
@@ -14,7 +15,8 @@ class IMP_Session(object):
         self.session = requests.session()
         self.headers = self.session.headers
         self.headers['User-Agent'] = user_agent
-        self.data = {}
+        self.preserve_data = {}
+        self.preserve_data_times = {}
         self.name = 'IMP_%s' % name
         pass
 
@@ -30,12 +32,31 @@ class IMP_Session(object):
         response = self.session.post(url, data=self.__generate_data(), json=json, **kwargs)
         return response
 
-    def add_value(self, key, value):
-        self.data[key] = value
+    def add_value(self, key, value, preserve_times=1):
+        '''
+        :param key:数据的key
+        :param value:数据值
+        :param preserve_times:这个数据是否需要多次用到，这里就是用大的次数，-1表示永久用到，默认是1
+        :return:无
+        '''
+        if preserve_times == -1:
+            preserve_times = sys.maxsize
+        self.preserve_data[key] = value
+        self.preserve_data_times[key] = preserve_times
 
     def __generate_data(self):
-        data = self.data
-        self.data = {}
+        data = {}
+        delete_list = []
+        for key in self.preserve_data_times:
+            if self.preserve_data_times[key] > 1:
+                self.preserve_data_times[key] -= 1
+                data[key] = self.preserve_data[key]
+            elif self.preserve_data_times[key] == 1:
+                data[key] = self.preserve_data[key]
+                delete_list.append(key)
+        for key in delete_list:
+            del self.preserve_data[key]
+            del self.preserve_data_times[key]
         return data
 
     def persistence(self):

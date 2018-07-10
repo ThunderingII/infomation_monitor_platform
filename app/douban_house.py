@@ -7,6 +7,7 @@ from core.notice import email_notice
 import re
 
 if __name__ == '__main__':
+    # 内容如config.ini，用户名和密码
     cu = config_util.ConfigUtil('my_config.ini')
     pfs = platform_session.load_ps()
     if pfs is None:
