@@ -1,0 +1,74 @@
+{
+  "name": "",
+  "main_request_tag": "main",
+  "request_list": [
+    {
+      "request_tag": "",
+      "url": "",
+      "request_type": "get",
+      "data": {
+        "username": "",
+        "password": ""
+      },
+      "return_type": "html",
+      "requestOperation": {
+        "type": "monitor,simulation",
+        "condition": {
+          "targetElement": "",
+          "dataType": "str,num",
+          "symbol": "in,=,>,<,>=,<=",
+          "aimData": "",
+          "true": {
+            "type": "goto,notice",
+            "gotoSetting": {
+              "gotoTag": ""
+            },
+            "noticeSetting": {
+              "noticeType": "email",
+              "to": "lin@mmail.win",
+              "content": "notice content"
+            },
+            "false": {}
+          }
+        },
+        "monitorSetting": {},
+        "simulationSetting": {}
+      },
+      "exceptionOperation": {
+        "exceptionType": "no_login",
+        "no_login": {},
+        "default": {
+          "type": [
+            "goto",
+            "notice"
+          ],
+          "gotoSetting": {
+            "gotoTag": "main"
+          },
+          "noticeSetting": {
+            "noticeType": "email",
+            "to": "lin@mmail.win",
+            "content": "notice content"
+          }
+        }
+      }
+    }
+  ],
+  "config_file_name": "",
+  "config_type": "",
+  "main_request_name": "main",
+  "resultOperation": {
+    "type": [
+      "goto",
+      "notice"
+    ],
+    "gotoSetting": {
+      "gotoTag": ""
+    },
+    "noticeSetting": {
+      "noticeType": "email",
+      "to": "lin@mmail.win",
+      "content": "notice content"
+    }
+  }
+}
